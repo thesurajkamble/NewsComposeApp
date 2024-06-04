@@ -1,4 +1,4 @@
-package com.surajkamble.newsapp_machine_coding.base
+package com.surajkamble.newsapp_machine_coding.common
 
 sealed class Result<T>(
     val data: T? = null,

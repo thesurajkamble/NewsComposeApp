@@ -1,10 +1,11 @@
 package com.surajkamble.newsapp_machine_coding.domain.usecase
 
-import com.surajkamble.newsapp_machine_coding.base.Result
-import com.surajkamble.newsapp_machine_coding.data.remote.model.TopHeadLineResponse
+import com.surajkamble.newsapp_machine_coding.common.Result
+import com.surajkamble.newsapp_machine_coding.data.remote.dto.TopHeadLineDto
 import com.surajkamble.newsapp_machine_coding.data.remote.repository.NewsRepository
+import javax.inject.Inject
 
-class GetTopHeadLinesUseCaseImpl(
+class GetTopHeadLinesUseCaseImpl @Inject constructor(
     private val newsRepository: NewsRepository
 ) : GetTopHeadLinesUseCase {
 
@@ -13,7 +14,7 @@ class GetTopHeadLinesUseCaseImpl(
         val apikey: String = "d6d0b971e5674e91a71d3c5bf144084c"
     )
 
-    override suspend fun execute(input: Input): Result<TopHeadLineResponse> {
+    override suspend fun execute(input: Input): Result<TopHeadLineDto> {
         return newsRepository.getTopHeadLines(
             country = input.country,
             apiKey = input.country

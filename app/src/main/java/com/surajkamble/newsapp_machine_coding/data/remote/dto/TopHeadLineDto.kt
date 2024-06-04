@@ -1,9 +1,9 @@
-package com.surajkamble.newsapp_machine_coding.data.remote.model
+package com.surajkamble.newsapp_machine_coding.data.remote.dto
 
 
 import com.google.gson.annotations.SerializedName
 
-data class TopHeadLineResponse(
+data class TopHeadLineDto(
     @SerializedName("articles")
     val articles: List<TopHeadLinesArticle>,
     @SerializedName("status")

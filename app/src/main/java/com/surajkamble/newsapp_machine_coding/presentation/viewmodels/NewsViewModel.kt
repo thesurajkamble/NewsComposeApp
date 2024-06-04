@@ -1,12 +1,11 @@
-package com.surajkamble.newsapp_machine_coding.presentation
+package com.surajkamble.newsapp_machine_coding.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.surajkamble.newsapp_machine_coding.data.remote.model.AllArticleResponse
-import com.surajkamble.newsapp_machine_coding.data.remote.model.TopHeadLineResponse
+import com.surajkamble.newsapp_machine_coding.data.remote.dto.AllArticleDto
+import com.surajkamble.newsapp_machine_coding.data.remote.dto.TopHeadLineDto
 import com.surajkamble.newsapp_machine_coding.domain.usecase.GetAllArticleUseCase
 import com.surajkamble.newsapp_machine_coding.domain.usecase.GetAllArticleUseCaseImpl
 import com.surajkamble.newsapp_machine_coding.domain.usecase.GetTopHeadLinesUseCase
@@ -19,27 +18,32 @@ class NewsViewModel @Inject constructor(
     private val getAllArticleUseCase: GetAllArticleUseCase,
     private val getTopHeadLinesUseCase: GetTopHeadLinesUseCase
 ) : ViewModel() {
-    private val _articles = MutableLiveData<Result<AllArticleResponse>>()
-    val articles: LiveData<Result<AllArticleResponse>> get() = _articles
+    private val _articles = MutableLiveData<AllArticleDto?>()
+    val articles: MutableLiveData<AllArticleDto?> get() = _articles
 
-    private val _headlines = MutableLiveData<Result<TopHeadLineResponse>>()
-    val headlines: LiveData<Result<TopHeadLineResponse>> get() = _headlines
+    private val _headlines = MutableLiveData<TopHeadLineDto>()
+    val headlines: LiveData<TopHeadLineDto> get() = _headlines
+
+    init {
+        getArticles(Input())
+    }
 
     data class Input(
         val query: String = "tesla",
-        val fromDate: String = "2024-04-29",
+        val fromDate: String = "2024-05-28",
         val apiKey: String = "d6d0b971e5674e91a71d3c5bf144084c"
     )
 
-    fun getArticles(input: Input) {
+    private fun getArticles(input: Input) {
         viewModelScope.launch {
-            getAllArticleUseCase.execute(
+           val result =  getAllArticleUseCase.execute(
                 GetAllArticleUseCaseImpl.Input(
                     query = input.query,
                     fromDate = input.fromDate,
                     apiKey = input.apiKey
                 )
             )
+            _articles.value = result.data
         }
     }
 }

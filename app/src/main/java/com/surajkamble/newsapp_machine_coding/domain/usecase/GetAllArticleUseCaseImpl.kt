@@ -1,9 +1,11 @@
 package com.surajkamble.newsapp_machine_coding.domain.usecase
 
-import com.surajkamble.newsapp_machine_coding.data.remote.model.AllArticleResponse
+import com.surajkamble.newsapp_machine_coding.common.Result
+import com.surajkamble.newsapp_machine_coding.data.remote.dto.AllArticleDto
 import com.surajkamble.newsapp_machine_coding.data.remote.repository.NewsRepository
+import javax.inject.Inject
 
-class GetAllArticleUseCaseImpl constructor(
+class GetAllArticleUseCaseImpl @Inject constructor(
     private val repository: NewsRepository
 ) : GetAllArticleUseCase {
     data class Input(
@@ -12,7 +14,7 @@ class GetAllArticleUseCaseImpl constructor(
         val apiKey: String
     )
 
-    override suspend fun execute(input: Input): Result<AllArticleResponse> {
+    override suspend fun execute(input: Input): Result<AllArticleDto> {
         return repository.getAllArticles(
             input.apiKey,
             input.fromDate,

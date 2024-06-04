@@ -6,8 +6,11 @@ import com.surajkamble.newsapp_machine_coding.domain.usecase.GetTopHeadLinesUseC
 import com.surajkamble.newsapp_machine_coding.domain.usecase.GetTopHeadLinesUseCaseImpl
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 @Module
+@InstallIn(SingletonComponent::class)
 abstract class DomainModule {
     @Binds
     abstract fun bindGetAllTopHeadLinesUseCase(
