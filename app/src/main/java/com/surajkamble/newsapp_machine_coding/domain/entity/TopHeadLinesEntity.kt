@@ -1,10 +1,9 @@
 package com.surajkamble.newsapp_machine_coding.domain.entity
 
-data class AllArticleEntity(
-    val article: List<Article?>,
-    val status: String?,
+data class TopHeadLinesEntity(
+    val articles: List<HeadLinesArticle?>
 ) {
-    data class Article(
+    data class HeadLinesArticle(
         val author: String?,
         val content: String?,
         val description: String?,

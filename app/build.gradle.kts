@@ -87,6 +87,8 @@ dependencies {
     // chuck network interceptor
     debugImplementation ("com.github.chuckerteam.chucker:library:3.5.2")
     releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:3.5.2")
+    // coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
 }
 
 kapt {
