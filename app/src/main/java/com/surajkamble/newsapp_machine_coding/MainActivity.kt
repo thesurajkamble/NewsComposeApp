@@ -7,7 +7,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,16 +32,35 @@ import com.surajkamble.newsapp_machine_coding.presentation.viewmodels.NewsViewMo
 import com.surajkamble.newsapp_machine_coding.presentation.theme.NewsApp_machine_codingTheme
 import dagger.hilt.android.AndroidEntryPoint
 import com.surajkamble.newsapp_machine_coding.presentation.composables.Loader
-import com.surajkamble.newsapp_machine_coding.presentation.composables.NewsScreen
-import com.surajkamble.newsapp_machine_coding.presentation.viewmodels.UIState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.dp
 import com.surajkamble.newsapp_machine_coding.domain.entity.AllArticleEntity
+import com.surajkamble.newsapp_machine_coding.domain.entity.TopHeadLinesEntity
+import com.surajkamble.newsapp_machine_coding.presentation.composables.NewsCard
+import com.surajkamble.newsapp_machine_coding.presentation.composables.NewsScreen
+import com.surajkamble.newsapp_machine_coding.presentation.composables.TopHeadLinesCard
+import com.surajkamble.newsapp_machine_coding.presentation.composables.TopicsRow
+import com.surajkamble.newsapp_machine_coding.presentation.viewmodels.UIState
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val newsViewModel: NewsViewModel by viewModels()
+
+    val topics = listOf(
+        "All",
+        "Politics",
+        "Business",
+        "Sports",
+        "Technology",
+        "Health",
+        "AI",
+        "Climate Change",
+        "Loksabha Elections 2024"
+    )
 
     @OptIn(ExperimentalMaterial3Api::class)
     @SuppressLint("CoroutineCreationDuringComposition", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -47,7 +72,8 @@ class MainActivity : ComponentActivity() {
                 val articles by newsViewModel.articles.collectAsState()
                 val headlines by newsViewModel.headlines.collectAsState()
 
-                val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+                val scrollBehavior =
+                    TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
                 Scaffold(
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                     topBar = {
@@ -65,17 +91,28 @@ class MainActivity : ComponentActivity() {
                             },
                             actions = {
                                 IconButton(onClick = { /*TODO*/ }) {
-                                    Icon(imageVector = Icons.Filled.Menu, contentDescription = "menu")
+                                    Icon(
+                                        imageVector = Icons.Filled.Menu,
+                                        contentDescription = "menu"
+                                    )
                                 }
                             },
                             scrollBehavior = scrollBehavior
                         )
                     }
-                ) {  innnerPadding ->
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
 
+                ) { innnerPadding ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innnerPadding)
                     ) {
+                        TopicsRow(topics = topics, onTopicSelected = { topic ->
+                            newsViewModel.getArticles(
+                                query = topic
+                            )
+                        })
+
                         when (articles) {
                             is UIState.Loading -> {
                                 Loader()
@@ -83,8 +120,7 @@ class MainActivity : ComponentActivity() {
 
                             is UIState.Success -> {
                                 NewsScreen(
-                                     (articles as UIState.Success<AllArticleEntity>).data,
-                                     headlines
+                                    (articles as UIState.Success<AllArticleEntity>).data
                                 )
                             }
 

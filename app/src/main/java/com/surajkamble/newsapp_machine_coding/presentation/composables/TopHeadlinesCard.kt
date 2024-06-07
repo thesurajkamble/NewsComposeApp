@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.surajkamble.newsapp_machine_coding.domain.entity.TopHeadLinesEntity
 
+
+
 @Composable
 fun TopHeadLinesCard(
     topHeadLines: TopHeadLinesEntity.HeadLinesArticle
@@ -24,7 +26,8 @@ fun TopHeadLinesCard(
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .width(400.dp),
+            .height(400.dp)
+            .width(600.dp),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -34,11 +37,18 @@ fun TopHeadLinesCard(
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Top Headlines",
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.height(4.dp))
             AsyncImage(
                 modifier =
                 Modifier
                     .height(200.dp)
-                    .width(200.dp),
+                    .width(400.dp),
                 model = topHeadLines.imageUrl,
                 contentDescription = null
             )

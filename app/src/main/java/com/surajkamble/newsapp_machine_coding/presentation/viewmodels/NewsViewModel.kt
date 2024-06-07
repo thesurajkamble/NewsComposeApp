@@ -1,11 +1,7 @@
 package com.surajkamble.newsapp_machine_coding.presentation.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.surajkamble.newsapp_machine_coding.data.remote.dto.AllArticleDto
-import com.surajkamble.newsapp_machine_coding.data.remote.dto.TopHeadLineDto
 import com.surajkamble.newsapp_machine_coding.domain.entity.AllArticleEntity
 import com.surajkamble.newsapp_machine_coding.domain.entity.TopHeadLinesEntity
 import com.surajkamble.newsapp_machine_coding.domain.usecase.GetAllArticleUseCase
@@ -32,23 +28,22 @@ class NewsViewModel @Inject constructor(
 
 
     init {
-        getArticles(Input())
+        getArticles()
     }
 
-    data class Input(
-        val query: String = "tesla",
-        val fromDate: String = "2024-05-28",
-        val apiKey: String = "d6d0b971e5674e91a71d3c5bf144084c"
-    )
 
-    private fun getArticles(input: Input) {
+     fun getArticles(
+         query: String = "all",
+         fromDate: String = "2024-05-28",
+         apiKey: String = "d6d0b971e5674e91a71d3c5bf144084c"
+     ) {
         viewModelScope.launch {
             _articles.emit(UIState.Loading())
             val result = getAllArticleUseCase.execute(
                 GetAllArticleUseCaseImpl.Input(
-                    query = input.query,
-                    fromDate = input.fromDate,
-                    apiKey = input.apiKey
+                    query = query,
+                    fromDate = fromDate,
+                    apiKey = apiKey
                 )
             )
             if (result != null) {

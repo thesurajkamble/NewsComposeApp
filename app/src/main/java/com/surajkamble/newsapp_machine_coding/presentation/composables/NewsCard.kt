@@ -18,9 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.surajkamble.newsapp_machine_coding.R
 import com.surajkamble.newsapp_machine_coding.domain.entity.AllArticleEntity
 
 @Composable
@@ -30,7 +33,8 @@ fun NewsCard(
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth(),
+            .width(400.dp)
+            .height(400.dp),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -42,22 +46,23 @@ fun NewsCard(
         ) {
             AsyncImage(
                 modifier =
-                Modifier.
-                    height(200.dp)
-                    .width(200.dp),
+                Modifier
+                    .height(200.dp)
+                    .width(400.dp),
                 model = article.imageUrl,
-                contentDescription = null
+                contentDescription = null,
+                error = painterResource(id = R.drawable.placeholder)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = article.title ?: "title",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = article.description ?: "description",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
